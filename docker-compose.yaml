@@ -1,0 +1,48 @@
+version: '3.6'
+services:
+  # zen-app:
+  #   build: .
+  #   container_name: zen-app
+  #   env_file:
+  #     - .env.production
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - redis
+  #     - postgres
+  #   networks:
+  #     - zen_net
+
+  postgres:
+    image: postgres:15
+    container_name: zen-postgres
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+      LANG: C.UTF-8
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - postgres-data:/var/lib/postgres/data
+    networks:
+      - zen_net
+
+  redis:
+    image: 'redis:6-alpine'
+    container_name: zen-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/var/lib/redis/data
+    networks:
+      - zen_net
+
+volumes:
+  postgres-data:
+  redis-data:
+  
+networks:
+  zen_net:
+    driver: bridge

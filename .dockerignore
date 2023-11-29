@@ -1,0 +1,9 @@
+node_modules
+
+dist
+build
+
+logs
+
+postgres-data
+redis-data
